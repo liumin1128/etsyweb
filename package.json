@@ -32,6 +32,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "5.0.0-alpha.125",
     "@mui/material": "^5.12.2",
+    "@mui/x-data-grid": "^6.3.0",
     "@mui/x-date-pickers": "^6.3.0",
     "@sentry/react": "^7.50.0",
     "@sentry/tracing": "^7.50.0",

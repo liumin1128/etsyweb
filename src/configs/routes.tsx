@@ -141,6 +141,13 @@ export default [
       },
 
       {
+        path: '/product',
+        component: '@/pages/product',
+        title: 'Product',
+        exact: true,
+      },
+
+      {
         path: '/dynamic',
         component: '@/layouts/dynamic',
         routes: [
@@ -193,7 +200,7 @@ export default [
 
       {
         path: '/',
-        redirect: '/retro',
+        redirect: '/product',
       },
     ],
   },

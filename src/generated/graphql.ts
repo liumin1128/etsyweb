@@ -90,6 +90,16 @@ export type CreateOrganizationInput = {
   name: Scalars['String'];
 };
 
+export type CreateProductInput = {
+  commentCount?: InputMaybe<Scalars['Int']>;
+  cover?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  stars?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateRetroInput = {
   anonymous?: InputMaybe<Scalars['Boolean']>;
   content?: InputMaybe<Scalars['String']>;
@@ -225,6 +235,7 @@ export type Mutation = {
   createNews?: Maybe<News>;
   createOAuth?: Maybe<OAuth>;
   createOrganization?: Maybe<Organization>;
+  createProduct?: Maybe<Product>;
   createRetro?: Maybe<Retro>;
   createRetroMessage?: Maybe<RetroMessage>;
   createSeat?: Maybe<Seat>;
@@ -285,6 +296,11 @@ export type MutationCreateOAuthArgs = {
 
 export type MutationCreateOrganizationArgs = {
   input?: InputMaybe<CreateOrganizationInput>;
+};
+
+
+export type MutationCreateProductArgs = {
+  input?: InputMaybe<CreateProductInput>;
 };
 
 
@@ -399,6 +415,20 @@ export type OrganizationRemoveUserInput = {
   user: Scalars['ID'];
 };
 
+export type Product = Document & {
+  __typename?: 'Product';
+  _id: Scalars['ID'];
+  commentCount?: Maybe<Scalars['Int']>;
+  cover?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  stars?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   currentOrganization?: Maybe<Organization>;
@@ -417,6 +447,8 @@ export type Query = {
   findLikes?: Maybe<Array<Maybe<Like>>>;
   findOrganization?: Maybe<Organization>;
   findOrganizations?: Maybe<Array<Maybe<Organization>>>;
+  findProduct?: Maybe<Product>;
+  findProducts?: Maybe<Array<Maybe<Product>>>;
   findRetro?: Maybe<Retro>;
   findRetroMessage?: Maybe<RetroMessage>;
   findRetroMessages?: Maybe<Array<Maybe<RetroMessage>>>;
@@ -482,6 +514,11 @@ export type QueryFindLikesArgs = {
 
 
 export type QueryFindOrganizationArgs = {
+  _id: Scalars['ID'];
+};
+
+
+export type QueryFindProductArgs = {
   _id: Scalars['ID'];
 };
 
@@ -869,6 +906,13 @@ export type CreateOrganizationMutationVariables = Exact<{
 
 export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', _id: string, name?: string | null, description?: string | null, logo?: string | null } | null };
 
+export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null };
+
+export type FindProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindProductsQuery = { __typename?: 'Query', findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null } | null> | null };
+
 export type RetroFieldsFragment = { __typename: 'Retro', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, username?: string | null, avatarUrl?: string | null } | null };
 
 export type RetroListItemFieldsFragment = { __typename: 'RetroListItem', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, likeCount?: number | null, happyCount?: number | null, unhappyCount?: number | null, wonderringCount?: number | null, todoCount?: number | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, avatarUrl?: string | null } | null };
@@ -1151,6 +1195,18 @@ export const OrganizationFieldsFragmentDoc = gql`
   name
   description
   logo
+}
+    `;
+export const ProductFieldsFragmentDoc = gql`
+    fragment productFields on Product {
+  _id
+  title
+  url
+  cover
+  stars
+  commentCount
+  name
+  id
 }
     `;
 export const RetroFieldsFragmentDoc = gql`
@@ -1694,6 +1750,40 @@ export function useCreateOrganizationMutation(baseOptions?: Apollo.MutationHookO
 export type CreateOrganizationMutationHookResult = ReturnType<typeof useCreateOrganizationMutation>;
 export type CreateOrganizationMutationResult = Apollo.MutationResult<CreateOrganizationMutation>;
 export type CreateOrganizationMutationOptions = Apollo.BaseMutationOptions<CreateOrganizationMutation, CreateOrganizationMutationVariables>;
+export const FindProductsDocument = gql`
+    query FindProducts {
+  findProducts {
+    ...productFields
+  }
+}
+    ${ProductFieldsFragmentDoc}`;
+
+/**
+ * __useFindProductsQuery__
+ *
+ * To run a query within a React component, call `useFindProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindProductsQuery(baseOptions?: Apollo.QueryHookOptions<FindProductsQuery, FindProductsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindProductsQuery, FindProductsQueryVariables>(FindProductsDocument, options);
+      }
+export function useFindProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindProductsQuery, FindProductsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindProductsQuery, FindProductsQueryVariables>(FindProductsDocument, options);
+        }
+export type FindProductsQueryHookResult = ReturnType<typeof useFindProductsQuery>;
+export type FindProductsLazyQueryHookResult = ReturnType<typeof useFindProductsLazyQuery>;
+export type FindProductsQueryResult = Apollo.QueryResult<FindProductsQuery, FindProductsQueryVariables>;
 export const FindRetrosDocument = gql`
     query FindRetros($page: Int, $pageSize: Int) {
   findRetros(page: $page, pageSize: $pageSize) {
@@ -2574,6 +2664,7 @@ export type UserToSeatDeletedSubscriptionResult = Apollo.SubscriptionResult<User
       "Interest",
       "Like",
       "Organization",
+      "Product",
       "Retro",
       "RetroListItem",
       "RetroMessage",

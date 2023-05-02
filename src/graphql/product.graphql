@@ -1,0 +1,16 @@
+fragment productFields on Product {
+  _id
+  title
+  url
+  cover
+  stars
+  commentCount
+  name
+  id
+}
+
+query FindProducts {
+  findProducts {
+    ...productFields
+  }
+}
