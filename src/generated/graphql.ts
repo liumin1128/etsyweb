@@ -449,6 +449,7 @@ export type Query = {
   findOrganizations?: Maybe<Array<Maybe<Organization>>>;
   findProduct?: Maybe<Product>;
   findProducts?: Maybe<Array<Maybe<Product>>>;
+  findProductsCount?: Maybe<Scalars['Int']>;
   findRetro?: Maybe<Retro>;
   findRetroMessage?: Maybe<RetroMessage>;
   findRetroMessages?: Maybe<Array<Maybe<RetroMessage>>>;
@@ -520,6 +521,18 @@ export type QueryFindOrganizationArgs = {
 
 export type QueryFindProductArgs = {
   _id: Scalars['ID'];
+};
+
+
+export type QueryFindProductsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryFindProductsCountArgs = {
+  search?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -908,10 +921,14 @@ export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrgani
 
 export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null };
 
-export type FindProductsQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindProductsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type FindProductsQuery = { __typename?: 'Query', findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null } | null> | null };
+export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null } | null> | null };
 
 export type RetroFieldsFragment = { __typename: 'Retro', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, username?: string | null, avatarUrl?: string | null } | null };
 
@@ -1751,10 +1768,11 @@ export type CreateOrganizationMutationHookResult = ReturnType<typeof useCreateOr
 export type CreateOrganizationMutationResult = Apollo.MutationResult<CreateOrganizationMutation>;
 export type CreateOrganizationMutationOptions = Apollo.BaseMutationOptions<CreateOrganizationMutation, CreateOrganizationMutationVariables>;
 export const FindProductsDocument = gql`
-    query FindProducts {
-  findProducts {
+    query FindProducts($skip: Int, $limit: Int, $search: String) {
+  findProducts(skip: $skip, limit: $limit, search: $search) {
     ...productFields
   }
+  findProductsCount(search: $search)
 }
     ${ProductFieldsFragmentDoc}`;
 
@@ -1770,6 +1788,9 @@ export const FindProductsDocument = gql`
  * @example
  * const { data, loading, error } = useFindProductsQuery({
  *   variables: {
+ *      skip: // value for 'skip'
+ *      limit: // value for 'limit'
+ *      search: // value for 'search'
  *   },
  * });
  */

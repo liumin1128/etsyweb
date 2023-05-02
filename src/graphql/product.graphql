@@ -9,8 +9,9 @@ fragment productFields on Product {
   id
 }
 
-query FindProducts {
-  findProducts {
+query FindProducts($skip: Int, $limit: Int, $search: String) {
+  findProducts(skip: $skip, limit: $limit, search: $search) {
     ...productFields
   }
+  findProductsCount(search: $search)
 }
