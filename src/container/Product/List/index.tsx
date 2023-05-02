@@ -1,5 +1,7 @@
 import React from 'react';
+import debounce from 'lodash/debounce';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import unionBy from 'lodash/unionBy';
 import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
 import { useFindProductsQuery } from '@/generated/graphql';
@@ -12,6 +14,8 @@ export default function DynamicListContainer() {
     page: 0,
   });
 
+  const [search, setSearch] = React.useState('');
+
   const { page, pageSize } = paginationModel;
   const skip = page === 0 ? 0 : page * pageSize;
   const limit = pageSize;
@@ -20,16 +24,28 @@ export default function DynamicListContainer() {
     variables: {
       limit,
       skip,
+      search,
     },
   });
 
-  if (loading) return <div>loading...</div>;
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  // if (loading) return <div>loading...</div>;
   if (error) return <Error />;
 
   const rows = unionBy(data?.findProducts, '_id') as GridRowsProp;
   return (
-    <Stack spacing={1}>
+    <Stack spacing={3}>
+      <TextField
+        label="search"
+        defaultValue={search}
+        onChange={debounce(handleSearch, 500)}
+      />
+
       <DataGrid
+        loading={loading}
         rowHeight={160}
         rows={rows}
         columns={columns}
