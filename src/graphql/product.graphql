@@ -7,6 +7,13 @@ fragment productFields on Product {
   commentCount
   name
   id
+
+  currencyValue
+  currencySymbol
+  originalCurrencyValue
+  originalCurrencySymbol
+  starSeller
+  tags
 }
 
 query FindProducts($skip: Int, $limit: Int, $search: String) {

@@ -93,9 +93,15 @@ export type CreateOrganizationInput = {
 export type CreateProductInput = {
   commentCount?: InputMaybe<Scalars['Int']>;
   cover?: InputMaybe<Scalars['String']>;
+  currencySymbol?: InputMaybe<Scalars['String']>;
+  currencyValue?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  originalCurrencySymbol?: InputMaybe<Scalars['String']>;
+  originalCurrencyValue?: InputMaybe<Scalars['Float']>;
+  starSeller?: InputMaybe<Scalars['Boolean']>;
   stars?: InputMaybe<Scalars['Float']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   title?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
 };
@@ -421,9 +427,15 @@ export type Product = Document & {
   commentCount?: Maybe<Scalars['Int']>;
   cover?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
+  currencySymbol?: Maybe<Scalars['String']>;
+  currencyValue?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  originalCurrencySymbol?: Maybe<Scalars['String']>;
+  originalCurrencyValue?: Maybe<Scalars['Float']>;
+  starSeller?: Maybe<Scalars['Boolean']>;
   stars?: Maybe<Scalars['Float']>;
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -919,7 +931,7 @@ export type CreateOrganizationMutationVariables = Exact<{
 
 export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', _id: string, name?: string | null, description?: string | null, logo?: string | null } | null };
 
-export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null };
+export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, tags?: Array<string | null> | null };
 
 export type FindProductsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']>;
@@ -928,7 +940,7 @@ export type FindProductsQueryVariables = Exact<{
 }>;
 
 
-export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null } | null> | null };
+export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, tags?: Array<string | null> | null } | null> | null };
 
 export type RetroFieldsFragment = { __typename: 'Retro', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, username?: string | null, avatarUrl?: string | null } | null };
 
@@ -1224,6 +1236,12 @@ export const ProductFieldsFragmentDoc = gql`
   commentCount
   name
   id
+  currencyValue
+  currencySymbol
+  originalCurrencyValue
+  originalCurrencySymbol
+  starSeller
+  tags
 }
     `;
 export const RetroFieldsFragmentDoc = gql`
