@@ -1,0 +1,39 @@
+fragment userFields on User {
+  __typename
+  _id
+  nickname
+  username
+  avatarUrl
+  sign
+  birthday
+  sex
+  position
+  company
+}
+
+query FindUsers {
+  findUsers {
+    ...userFields
+  }
+}
+
+query FindUserInfo {
+  findUserInfo {
+    ...userFields
+  }
+}
+
+query Login($input: LoginUserInput) {
+  login(input: $input) {
+    user {
+      ...userFields
+    }
+    token
+  }
+}
+
+mutation UpdateUserInfo($input: UpdateUserInfoInput) {
+  updateUserInfo(input: $input) {
+    ...userFields
+  }
+}

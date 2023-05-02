@@ -1,0 +1,57 @@
+fragment userToSeatFields on UserToSeat {
+  _id
+  createdAt
+  date
+  seat {
+    _id
+  }
+  user {
+    ...userFields
+  }
+}
+
+query FindUserToSeats(
+  $seat: ID
+  $user: ID
+  $startDate: Float
+  $endDate: Float
+) {
+  list: findUserToSeats(
+    seat: $seat
+    user: $user
+    startDate: $startDate
+    endDate: $endDate
+  ) {
+    ...userToSeatFields
+  }
+}
+
+query FindUserToSeat($_id: ID!) {
+  userToSeat: findUserToSeat(_id: $_id) {
+    ...userToSeatFields
+  }
+}
+
+mutation CreateUserToSeat($seat: ID!, $date: Float!) {
+  userToSeat: createUserToSeat(input: { seat: $seat, date: $date }) {
+    ...userToSeatFields
+  }
+}
+
+mutation DeleteUserToSeat($seat: ID!, $date: Float!) {
+  userToSeat: deleteUserToSeat(input: { seat: $seat, date: $date }) {
+    ...userToSeatFields
+  }
+}
+
+subscription UserToSeatCreated {
+  userToSeat: userToSeatCreated {
+    ...userToSeatFields
+  }
+}
+
+subscription UserToSeatDeleted {
+  userToSeat: userToSeatDeleted {
+    ...userToSeatFields
+  }
+}

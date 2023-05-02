@@ -1,0 +1,122 @@
+fragment retroMessageFields on RetroMessage {
+  _id
+  content
+  status
+  type
+  like
+  createdAt
+  updatedAt
+  pictures
+  anonymous
+  user {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+}
+
+query FindRetroSection($retro: ID!) {
+  retroMessages: findRetroMessages(retro: $retro) {
+    ...retroMessageFields
+  }
+  retro: findRetro(_id: $retro) {
+    ...retroFields
+  }
+  userInfo: findUserInfo {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+}
+
+query FindRetroMessages($retro: ID!) {
+  retroMessages: findRetroMessages(retro: $retro) {
+    ...retroMessageFields
+  }
+}
+
+query FindRetroMessage($_id: ID!) {
+  retroMessage: findRetroMessage(_id: $_id) {
+    ...retroMessageFields
+  }
+}
+
+mutation CreateRetroMessage(
+  $retro: ID!
+  $content: String!
+  $type: RetroMessageType!
+  $pictures: [String!]
+  $anonymous: Boolean
+) {
+  retroMessage: createRetroMessage(
+    input: {
+      retro: $retro
+      content: $content
+      type: $type
+      pictures: $pictures
+      anonymous: $anonymous
+    }
+  ) {
+    ...retroMessageFields
+  }
+}
+
+mutation UpdateRetroMessage(
+  $_id: ID!
+  $content: String
+  $type: RetroMessageType
+  $status: RetroMessageStatus
+  $pictures: [String!]
+  $anonymous: Boolean
+) {
+  retroMessage: updateRetroMessage(
+    _id: $_id
+    input: {
+      content: $content
+      type: $type
+      status: $status
+      pictures: $pictures
+      anonymous: $anonymous
+    }
+  ) {
+    ...retroMessageFields
+  }
+}
+
+mutation LikeRetroMessage($_id: ID!, $count: Int) {
+  retroMessage: likeRetroMessage(_id: $_id, count: $count) {
+    ...retroMessageFields
+  }
+}
+
+mutation DeleteRetroMessage($_id: ID!) {
+  retroMessage: deleteRetroMessage(_id: $_id) {
+    ...retroMessageFields
+  }
+}
+
+subscription RetroMessageCreated {
+  retroMessage: retroMessageCreated {
+    ...retroMessageFields
+  }
+}
+
+subscription RetroMessageUpdated {
+  retroMessage: retroMessageUpdated {
+    ...retroMessageFields
+  }
+}
+
+subscription RetroMessageLiked {
+  retroMessage: retroMessageLiked {
+    ...retroMessageFields
+  }
+}
+
+subscription RetroMessageDeleted {
+  retroMessage: retroMessageDeleted {
+    ...retroMessageFields
+  }
+}

@@ -1,0 +1,69 @@
+fragment retroFields on Retro {
+  __typename
+  _id
+  title
+  content
+  date
+  anonymous
+  user {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+}
+
+fragment retroListItemFields on RetroListItem {
+  __typename
+  _id
+  title
+  content
+  date
+  anonymous
+  likeCount
+  happyCount
+  unhappyCount
+  wonderringCount
+  todoCount
+  user {
+    _id
+    nickname
+    avatarUrl
+  }
+}
+
+query FindRetros($page: Int, $pageSize: Int) {
+  findRetros(page: $page, pageSize: $pageSize) {
+    ...retroListItemFields
+  }
+}
+
+query FindRetro($_id: ID!) {
+  findRetro(_id: $_id) {
+    ...retroFields
+  }
+}
+
+mutation CreateRetro(
+  $title: String
+  $content: String
+  $date: String!
+  $anonymous: Boolean
+) {
+  createRetro(
+    input: {
+      title: $title
+      content: $content
+      date: $date
+      anonymous: $anonymous
+    }
+  ) {
+    ...retroFields
+  }
+}
+
+subscription RetroCreated {
+  retroCreated {
+    ...retroFields
+  }
+}

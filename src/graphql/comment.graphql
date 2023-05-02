@@ -1,0 +1,94 @@
+fragment commentFields on Comment {
+  _id
+  content
+  createdAt
+  likeCount
+  likeStatus
+  user {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+  comments {
+    _id
+    content
+    createdAt
+    likeCount
+    likeStatus
+    user {
+      _id
+      nickname
+      username
+      avatarUrl
+    }
+    commentTo {
+      _id
+    }
+    replyTo {
+      _id
+      user {
+        _id
+        nickname
+        username
+        avatarUrl
+      }
+    }
+  }
+}
+
+fragment replyFields on Reply {
+  _id
+  content
+  createdAt
+  likeCount
+  likeStatus
+  user {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+  commentTo {
+    _id
+  }
+  replyTo {
+    _id
+    user {
+      _id
+      nickname
+      username
+      avatarUrl
+    }
+  }
+}
+
+query FindComments($object: ID!) {
+  findComments(object: $object) {
+    ...commentFields
+  }
+}
+
+query FindComment($_id: ID!) {
+  findComment(_id: $_id) {
+    ...commentFields
+  }
+}
+
+mutation CreateComment(
+  $object: ID!
+  $objectModel: CommentObjectUnionModel!
+  $content: String!
+) {
+  createComment(
+    input: { object: $object, objectModel: $objectModel, content: $content }
+  ) {
+    ...commentFields
+  }
+}
+
+mutation ReplyComment($to: ID!, $content: String!) {
+  replyComment(input: { to: $to, content: $content }) {
+    ...replyFields
+  }
+}

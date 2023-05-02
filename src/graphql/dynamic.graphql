@@ -1,0 +1,34 @@
+fragment dynamicFields on Dynamic {
+  _id
+  createdAt
+  content
+  pictures
+  likeCount
+  likeStatus
+  commentCount
+  shareCount
+  user {
+    _id
+    nickname
+    username
+    avatarUrl
+  }
+}
+
+query FindDynamics {
+  findDynamics {
+    ...dynamicFields
+  }
+}
+
+query FindDynamic($_id: ID!) {
+  findDynamic(_id: $_id) {
+    ...dynamicFields
+  }
+}
+
+mutation CreateDynamic($content: String!, $pictures: [String!]) {
+  createDynamic(input: { content: $content, pictures: $pictures }) {
+    ...dynamicFields
+  }
+}
