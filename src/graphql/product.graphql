@@ -1,19 +1,27 @@
 fragment productFields on Product {
   _id
+
   title
   url
   cover
   stars
   commentCount
-  name
   id
-
+  name
+  reviews
+  favorites
+  sales
   currencyValue
   currencySymbol
   originalCurrencyValue
   originalCurrencySymbol
   starSeller
+  etsyPick
+  bestSeller
+  freeShipping
   tags
+  pictures
+  kinds
 }
 
 query FindProducts($skip: Int, $limit: Int, $search: String) {

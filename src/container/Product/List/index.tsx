@@ -46,7 +46,7 @@ export default function DynamicListContainer() {
 
       <DataGrid
         loading={loading}
-        rowHeight={160}
+        rowHeight={200}
         rows={rows}
         columns={columns}
         // 分页器

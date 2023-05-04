@@ -91,6 +91,30 @@ export type CreateOrganizationInput = {
 };
 
 export type CreateProductInput = {
+  bestSeller?: InputMaybe<Scalars['Boolean']>;
+  commentCount?: InputMaybe<Scalars['Int']>;
+  cover?: InputMaybe<Scalars['String']>;
+  currencySymbol?: InputMaybe<Scalars['String']>;
+  currencyValue?: InputMaybe<Scalars['Float']>;
+  etsyPick?: InputMaybe<Scalars['Boolean']>;
+  favorites?: InputMaybe<Scalars['Int']>;
+  freeShipping?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['String']>;
+  kinds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name?: InputMaybe<Scalars['String']>;
+  originalCurrencySymbol?: InputMaybe<Scalars['String']>;
+  originalCurrencyValue?: InputMaybe<Scalars['Float']>;
+  pictures?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  reviews?: InputMaybe<Scalars['Int']>;
+  sales?: InputMaybe<Scalars['Int']>;
+  starSeller?: InputMaybe<Scalars['Boolean']>;
+  stars?: InputMaybe<Scalars['Float']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateProductSnapshotInput = {
   commentCount?: InputMaybe<Scalars['Int']>;
   cover?: InputMaybe<Scalars['String']>;
   currencySymbol?: InputMaybe<Scalars['String']>;
@@ -242,6 +266,7 @@ export type Mutation = {
   createOAuth?: Maybe<OAuth>;
   createOrganization?: Maybe<Organization>;
   createProduct?: Maybe<Product>;
+  createProductSnapshot?: Maybe<ProductSnapshot>;
   createRetro?: Maybe<Retro>;
   createRetroMessage?: Maybe<RetroMessage>;
   createSeat?: Maybe<Seat>;
@@ -307,6 +332,11 @@ export type MutationCreateOrganizationArgs = {
 
 export type MutationCreateProductArgs = {
   input?: InputMaybe<CreateProductInput>;
+};
+
+
+export type MutationCreateProductSnapshotArgs = {
+  input?: InputMaybe<CreateProductSnapshotInput>;
 };
 
 
@@ -424,6 +454,34 @@ export type OrganizationRemoveUserInput = {
 export type Product = Document & {
   __typename?: 'Product';
   _id: Scalars['ID'];
+  bestSeller?: Maybe<Scalars['Boolean']>;
+  commentCount?: Maybe<Scalars['Int']>;
+  cover?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['String']>;
+  currencySymbol?: Maybe<Scalars['String']>;
+  currencyValue?: Maybe<Scalars['Float']>;
+  etsyPick?: Maybe<Scalars['Boolean']>;
+  favorites?: Maybe<Scalars['Int']>;
+  freeShipping?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['String']>;
+  kinds?: Maybe<Array<Maybe<Scalars['String']>>>;
+  name?: Maybe<Scalars['String']>;
+  originalCurrencySymbol?: Maybe<Scalars['String']>;
+  originalCurrencyValue?: Maybe<Scalars['Float']>;
+  pictures?: Maybe<Array<Maybe<Scalars['String']>>>;
+  reviews?: Maybe<Scalars['Int']>;
+  sales?: Maybe<Scalars['Int']>;
+  starSeller?: Maybe<Scalars['Boolean']>;
+  stars?: Maybe<Scalars['Float']>;
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+export type ProductSnapshot = Document & {
+  __typename?: 'ProductSnapshot';
+  _id: Scalars['ID'];
   commentCount?: Maybe<Scalars['Int']>;
   cover?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
@@ -460,6 +518,9 @@ export type Query = {
   findOrganization?: Maybe<Organization>;
   findOrganizations?: Maybe<Array<Maybe<Organization>>>;
   findProduct?: Maybe<Product>;
+  findProductSnapshot?: Maybe<ProductSnapshot>;
+  findProductSnapshots?: Maybe<Array<Maybe<ProductSnapshot>>>;
+  findProductSnapshotsCount?: Maybe<Scalars['Int']>;
   findProducts?: Maybe<Array<Maybe<Product>>>;
   findProductsCount?: Maybe<Scalars['Int']>;
   findRetro?: Maybe<Retro>;
@@ -533,6 +594,23 @@ export type QueryFindOrganizationArgs = {
 
 export type QueryFindProductArgs = {
   _id: Scalars['ID'];
+};
+
+
+export type QueryFindProductSnapshotArgs = {
+  _id: Scalars['ID'];
+};
+
+
+export type QueryFindProductSnapshotsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryFindProductSnapshotsCountArgs = {
+  search?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -931,7 +1009,7 @@ export type CreateOrganizationMutationVariables = Exact<{
 
 export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', _id: string, name?: string | null, description?: string | null, logo?: string | null } | null };
 
-export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, tags?: Array<string | null> | null };
+export type ProductFieldsFragment = { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, id?: string | null, name?: string | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, etsyPick?: boolean | null, bestSeller?: boolean | null, freeShipping?: boolean | null, tags?: Array<string | null> | null, pictures?: Array<string | null> | null, kinds?: Array<string | null> | null };
 
 export type FindProductsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']>;
@@ -940,7 +1018,7 @@ export type FindProductsQueryVariables = Exact<{
 }>;
 
 
-export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, name?: string | null, id?: string | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, tags?: Array<string | null> | null } | null> | null };
+export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, id?: string | null, name?: string | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, etsyPick?: boolean | null, bestSeller?: boolean | null, freeShipping?: boolean | null, tags?: Array<string | null> | null, pictures?: Array<string | null> | null, kinds?: Array<string | null> | null } | null> | null };
 
 export type RetroFieldsFragment = { __typename: 'Retro', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, username?: string | null, avatarUrl?: string | null } | null };
 
@@ -1234,14 +1312,22 @@ export const ProductFieldsFragmentDoc = gql`
   cover
   stars
   commentCount
-  name
   id
+  name
+  reviews
+  favorites
+  sales
   currencyValue
   currencySymbol
   originalCurrencyValue
   originalCurrencySymbol
   starSeller
+  etsyPick
+  bestSeller
+  freeShipping
   tags
+  pictures
+  kinds
 }
     `;
 export const RetroFieldsFragmentDoc = gql`
@@ -2704,6 +2790,7 @@ export type UserToSeatDeletedSubscriptionResult = Apollo.SubscriptionResult<User
       "Like",
       "Organization",
       "Product",
+      "ProductSnapshot",
       "Retro",
       "RetroListItem",
       "RetroMessage",
