@@ -1,5 +1,6 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
+import dayjs from 'dayjs';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
@@ -8,8 +9,32 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import ImageGallery from 'react-image-gallery';
 import { useFindProductByIdQuery } from '@/generated/graphql';
-
 import 'react-image-gallery/styles/css/image-gallery.css';
+import LineChart from '@/components/Chart/Line';
+
+const getData = (detail, key) => {
+  const sss = [];
+  for (let i = 0; i < 30; i += 1) {
+    const day = dayjs()
+      .add(-30 + i, 'days')
+      .format('MM-DD');
+    const obj = {
+      key: day,
+      value: 0,
+      category: 'day',
+    };
+
+    const item = detail?.snapshots?.find(
+      (d) => dayjs(parseFloat(d?.createdAt as string)).format('MM-DD') === day,
+    );
+    if (item) {
+      obj.value = item[key] as number;
+    }
+    sss.push(obj);
+  }
+
+  return sss;
+};
 
 export default function DynamicListContainer({ id }) {
   const { data, loading, error } = useFindProductByIdQuery({
@@ -22,47 +47,50 @@ export default function DynamicListContainer({ id }) {
   const detail = data?.findProductById;
 
   console.log(data);
+
   return (
-    <Stack spacing={3}>
+    <Stack>
       <Grid container spacing={4}>
         <Grid item md={7}>
-          <ImageGallery
-            showPlayButton={false}
-            showNav={false}
-            thumbnailPosition="left"
-            items={data?.findProductById?.pictures?.map((i) => {
-              if (i.indexOf('video') !== -1) {
+          <Stack>
+            <ImageGallery
+              showPlayButton={false}
+              showNav={false}
+              thumbnailPosition="left"
+              items={data?.findProductById?.pictures?.map((i) => {
+                if (i.indexOf('video') !== -1) {
+                  return {
+                    original: i,
+                    thumbnail: i,
+                    renderItem: () => {
+                      return (
+                        <video width="100%" height="100%" controls>
+                          <source alt="" src={i} type="video/mp4" />
+                        </video>
+                      );
+                    },
+                    renderThumbInner: () => {
+                      return (
+                        <Box
+                          sx={{
+                            padding: '20px',
+                            color: 'red',
+                            border: '1px red  solid',
+                          }}
+                        >
+                          video
+                        </Box>
+                      );
+                    },
+                  };
+                }
                 return {
                   original: i,
                   thumbnail: i,
-                  renderItem: () => {
-                    return (
-                      <video width="100%" height="100%" controls>
-                        <source alt="" src={i} type="video/mp4" />
-                      </video>
-                    );
-                  },
-                  renderThumbInner: () => {
-                    return (
-                      <Box
-                        sx={{
-                          padding: '20px',
-                          color: 'red',
-                          border: '1px red  solid',
-                        }}
-                      >
-                        video
-                      </Box>
-                    );
-                  },
                 };
-              }
-              return {
-                original: i,
-                thumbnail: i,
-              };
-            })}
-          />
+              })}
+            />
+          </Stack>
         </Grid>
 
         <Grid item md={5}>
@@ -108,6 +136,27 @@ export default function DynamicListContainer({ id }) {
                 })}
               </Stack>
             </Stack>
+          </Stack>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Stack spacing={2}>
+            <Typography variant="h3">Sales</Typography>
+            <LineChart data={getData(detail, 'sales')} />
+          </Stack>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Stack spacing={2}>
+            <Typography variant="h3">Reviews</Typography>
+            <LineChart data={getData(detail, 'reviews')} />
+          </Stack>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Stack spacing={2}>
+            <Typography variant="h3">Favorites</Typography>
+            <LineChart data={getData(detail, 'favorites')} />
           </Stack>
         </Grid>
       </Grid>
