@@ -1017,6 +1017,13 @@ export type FindProductsQueryVariables = Exact<{
 
 export type FindProductsQuery = { __typename?: 'Query', findProductsCount?: number | null, findProducts?: Array<{ __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, id?: string | null, name?: string | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, etsyPick?: boolean | null, bestSeller?: boolean | null, freeShipping?: boolean | null, tags?: Array<string | null> | null, pictures?: Array<string | null> | null, kinds?: Array<string | null> | null, snapshots?: Array<{ __typename?: 'ProductSnapshot', stars?: number | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, createdAt?: string | null } | null> | null } | null> | null };
 
+export type FindProductByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindProductByIdQuery = { __typename?: 'Query', findProductById?: { __typename?: 'Product', _id: string, title?: string | null, url?: string | null, cover?: string | null, stars?: number | null, commentCount?: number | null, id?: string | null, name?: string | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, currencySymbol?: string | null, originalCurrencyValue?: number | null, originalCurrencySymbol?: string | null, starSeller?: boolean | null, etsyPick?: boolean | null, bestSeller?: boolean | null, freeShipping?: boolean | null, tags?: Array<string | null> | null, pictures?: Array<string | null> | null, kinds?: Array<string | null> | null, snapshots?: Array<{ __typename?: 'ProductSnapshot', stars?: number | null, reviews?: number | null, favorites?: number | null, sales?: number | null, currencyValue?: number | null, createdAt?: string | null } | null> | null } | null };
+
 export type RetroFieldsFragment = { __typename: 'Retro', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, username?: string | null, avatarUrl?: string | null } | null };
 
 export type RetroListItemFieldsFragment = { __typename: 'RetroListItem', _id: string, title?: string | null, content?: string | null, date?: string | null, anonymous?: boolean | null, likeCount?: number | null, happyCount?: number | null, unhappyCount?: number | null, wonderringCount?: number | null, todoCount?: number | null, user?: { __typename?: 'User', _id: string, nickname?: string | null, avatarUrl?: string | null } | null };
@@ -1914,6 +1921,41 @@ export function useFindProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type FindProductsQueryHookResult = ReturnType<typeof useFindProductsQuery>;
 export type FindProductsLazyQueryHookResult = ReturnType<typeof useFindProductsLazyQuery>;
 export type FindProductsQueryResult = Apollo.QueryResult<FindProductsQuery, FindProductsQueryVariables>;
+export const FindProductByIdDocument = gql`
+    query findProductById($id: String) {
+  findProductById(id: $id) {
+    ...productFields
+  }
+}
+    ${ProductFieldsFragmentDoc}`;
+
+/**
+ * __useFindProductByIdQuery__
+ *
+ * To run a query within a React component, call `useFindProductByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindProductByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindProductByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindProductByIdQuery(baseOptions?: Apollo.QueryHookOptions<FindProductByIdQuery, FindProductByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindProductByIdQuery, FindProductByIdQueryVariables>(FindProductByIdDocument, options);
+      }
+export function useFindProductByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindProductByIdQuery, FindProductByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindProductByIdQuery, FindProductByIdQueryVariables>(FindProductByIdDocument, options);
+        }
+export type FindProductByIdQueryHookResult = ReturnType<typeof useFindProductByIdQuery>;
+export type FindProductByIdLazyQueryHookResult = ReturnType<typeof useFindProductByIdLazyQuery>;
+export type FindProductByIdQueryResult = Apollo.QueryResult<FindProductByIdQuery, FindProductByIdQueryVariables>;
 export const FindRetrosDocument = gql`
     query FindRetros($page: Int, $pageSize: Int) {
   findRetros(page: $page, pageSize: $pageSize) {

@@ -76,6 +76,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.43.9
     version: 7.43.9(react@18.2.0)
+  react-image-gallery:
+    specifier: ^1.2.11
+    version: 1.2.11(react@18.2.0)
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -10551,6 +10554,14 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-image-gallery@1.2.11(react@18.2.0):
+    resolution: {integrity: sha512-YLMCdNSCf3YPhRmnjEOdEZGEXghTMx4o3dlAqd0rz0nAyebUvTz/xJnIHPActbPSHCvVJgt5A09EPHYbGqw++w==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
     dev: false

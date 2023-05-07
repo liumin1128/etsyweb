@@ -39,3 +39,9 @@ query FindProducts($skip: Int, $limit: Int, $search: String) {
   }
   findProductsCount(search: $search)
 }
+
+query findProductById($id: String) {
+  findProductById(id: $id) {
+    ...productFields
+  }
+}
