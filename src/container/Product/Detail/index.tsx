@@ -1,6 +1,10 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import ImageGallery from 'react-image-gallery';
 import { useFindProductByIdQuery } from '@/generated/graphql';
@@ -15,11 +19,13 @@ export default function DynamicListContainer({ id }) {
   if (loading) return <div>loading...</div>;
   if (error) return <div>error...</div>;
 
+  const detail = data?.findProductById;
+
   console.log(data);
   return (
     <Stack spacing={3}>
-      <Grid container>
-        <Grid item md={6}>
+      <Grid container spacing={4}>
+        <Grid item md={7}>
           <ImageGallery
             showPlayButton={false}
             showNav={false}
@@ -57,6 +63,52 @@ export default function DynamicListContainer({ id }) {
               };
             })}
           />
+        </Grid>
+
+        <Grid item md={5}>
+          <Stack spacing={4}>
+            <Stack spacing={1.5}>
+              <Typography variant="caption">Price</Typography>
+              <Typography variant="h1">
+                {detail?.currencySymbol} {detail?.currencyValue}
+              </Typography>
+            </Stack>
+
+            <Stack spacing={1.5}>
+              <Typography variant="caption">Title</Typography>
+              <Typography variant="body1">{detail?.title}</Typography>
+            </Stack>
+
+            <Stack spacing={1.5}>
+              <Typography variant="caption">Kinds</Typography>
+              <Breadcrumbs separator="›" aria-label="breadcrumb">
+                {detail?.kinds?.map((i) => {
+                  return (
+                    <Link underline="hover" key={i} color="inherit" href="/">
+                      {i}
+                    </Link>
+                  );
+                })}
+              </Breadcrumbs>
+            </Stack>
+
+            <Stack spacing={1.5}>
+              <Typography variant="caption">Tags</Typography>
+              <Stack direction="row" flexWrap="wrap">
+                {detail?.tags?.map((i) => {
+                  return (
+                    <Chip
+                      sx={{ mr: 1, mb: 1 }}
+                      key={i}
+                      label={i}
+                      variant="outlined"
+                      // size="small"
+                    />
+                  );
+                })}
+              </Stack>
+            </Stack>
+          </Stack>
         </Grid>
       </Grid>
     </Stack>
