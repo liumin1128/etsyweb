@@ -22,6 +22,15 @@ fragment productFields on Product {
   tags
   pictures
   kinds
+
+  snapshots {
+    stars
+    reviews
+    favorites
+    sales
+    currencyValue
+    createdAt
+  }
 }
 
 query FindProducts($skip: Int, $limit: Int, $search: String) {

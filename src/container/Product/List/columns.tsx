@@ -3,10 +3,39 @@ import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Badge from '@mui/material/Badge';
+import NorthIcon from '@mui/icons-material/North';
+import LinkIcon from '@mui/icons-material/Link';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import StraightIcon from '@mui/icons-material/Straight';
 import CardMedia from '@mui/material/CardMedia';
 import { GridColDef } from '@mui/x-data-grid';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+
+const Increment = ({ value, title }) => {
+  return (
+    <Tooltip arrow title={title}>
+      <Typography
+        sx={{
+          color: 'green',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // backgroundColor: 'rgba(0, 255, 0, 0.1)',
+          borderRadius: '4px',
+          padding: '0  2px',
+        }}
+      >
+        <NorthIcon fontSize="inherit" sx={{ height: '12px' }} />
+        {value}
+      </Typography>
+    </Tooltip>
+  );
+};
+
 const columns: GridColDef[] = [
   {
     field: 'cover',
@@ -91,16 +120,84 @@ const columns: GridColDef[] = [
   {
     field: 'reviews',
     headerName: 'Reviews',
+    width: 140,
+
+    renderCell: (params) => {
+      const firstSnapshot = params?.row?.snapshots[0];
+
+      const lastSnapshot =
+        params?.row?.snapshots[params?.row?.snapshots.length - 1];
+
+      const increment = firstSnapshot.reviews - lastSnapshot.reviews;
+
+      return (
+        <Stack spacing={0} direction="row">
+          <Typography>{params?.value}</Typography>
+          {increment > 0 && (
+            <Increment
+              title="The increase in the last 7 days"
+              value={increment}
+            />
+          )}
+        </Stack>
+      );
+    },
   },
 
   {
     field: 'favorites',
     headerName: 'Favorites',
+    width: 140,
+
+    renderCell: (params) => {
+      const firstSnapshot = params?.row?.snapshots[0];
+
+      const lastSnapshot =
+        params?.row?.snapshots[params?.row?.snapshots.length - 1];
+
+      const increment = firstSnapshot.favorites - lastSnapshot.favorites;
+
+      return (
+        <Stack spacing={0} direction="row">
+          <Typography>{params?.value}</Typography>
+
+          {increment > 0 && (
+            <Increment
+              title="The increase in the last 7 days"
+              value={increment}
+            />
+          )}
+        </Stack>
+      );
+    },
   },
 
   {
     field: 'sales',
     headerName: 'Sales',
+
+    width: 140,
+
+    renderCell: (params) => {
+      const firstSnapshot = params?.row?.snapshots[0];
+
+      const lastSnapshot =
+        params?.row?.snapshots[params?.row?.snapshots.length - 1];
+
+      const increment = firstSnapshot.sales - lastSnapshot.sales;
+
+      return (
+        <Stack spacing={0} direction="row">
+          <Typography>{params?.value}</Typography>
+          {increment > 0 && (
+            <Increment
+              title="The increase in the last 7 days"
+              value={increment}
+            />
+          )}
+        </Stack>
+      );
+    },
   },
 
   // {
@@ -133,6 +230,40 @@ const columns: GridColDef[] = [
           {params?.value.map((tag: string) => {
             return <Box key={tag}>{tag}</Box>;
           })}
+        </Stack>
+      );
+    },
+  },
+
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    width: 140,
+    renderCell: (params) => {
+      return (
+        <Stack spacing={1} direction="row">
+          <Tooltip arrow title={params?.row?.url}>
+            <Link
+              href={params?.row?.url}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                window.open(params?.row?.url, '_blank');
+              }}
+            >
+              <IconButton aria-label="delete">
+                <LinkIcon fontSize="inherit" />
+              </IconButton>
+            </Link>
+          </Tooltip>
+
+          <Tooltip arrow title={params?.row?.url}>
+            <Link href={`/product/${params?.row?.id}`}>
+              <IconButton aria-label="delete">
+                <VisibilityIcon fontSize="inherit" />
+              </IconButton>
+            </Link>
+          </Tooltip>
         </Stack>
       );
     },

@@ -55,6 +55,9 @@ export default function DynamicListContainer() {
         paginationModel={paginationModel}
         rowCount={data?.findProductsCount || 0}
         onPaginationModelChange={setPaginationModel}
+        onRowClick={(params, event) => {
+          console.log(params, event);
+        }}
       />
     </Stack>
   );

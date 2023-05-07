@@ -142,9 +142,20 @@ export default [
 
       {
         path: '/product',
-        component: '@/pages/product',
-        title: 'Product',
-        exact: true,
+        routes: [
+          {
+            path: '/product',
+            component: '@/pages/product',
+            title: 'Dynamic',
+            exact: true,
+          },
+          {
+            path: '/product/:id',
+            component: '@/pages/product/detail',
+            title: 'Dynamic Detail',
+            exact: true,
+          },
+        ],
       },
 
       {
